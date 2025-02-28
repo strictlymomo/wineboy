@@ -8,6 +8,7 @@ const FONTS = [FONT_1, FONT_2];
 await Promise.all(FONTS.map((f) => figma.loadFontAsync(f)));
 const FONT_SIZE = 30;
 const TEXT_FILLS = [{ type: "SOLID", color: { r: 1, g: 1, b: 1 } }];
+
 const STEINER = "RUDOLF STEINER";
 const DATA = [
   "Love starts when we push aside our ego",
@@ -38,15 +39,22 @@ async function iterate(data: string) {
   setNextCPlane();
 }
 
+/**
+ * @returns last text position for dynmically updating the frame height
+ */
 function createTexts(data: string, frame: any, fonts: any[]) {
   let pos = [50, 50];
   for (let i = 0; i < FONTS.length; i++) {
     const height = createText(data, frame, FONTS[i], pos);
     pos = [pos[0], pos[1] + height + PADDING];
   }
-  return pos;
+  const lastTextPosition = pos;
+  return lastTextPosition;
 }
 
+/**
+ * @returns height of textNode
+ */
 function createText(data: string, frame: any, font: any, position: number[]) {
   const text = figma.createText();
   text.x = position[0];
